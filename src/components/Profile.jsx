@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export class Profile extends React.Component{
     constructor() {
@@ -8,7 +8,13 @@ export class Profile extends React.Component{
         }
     }
     componentDidMount() {
-        fetch(`http://okhater.beget.tech/getUser`)
+        const formData = new FormData();
+        let userId = window.location.pathname.split("/")[2];
+        formData.append("userId",userId);
+        fetch("http://okhater.beget.tech/getUser",{
+            method: "POST",
+            body: formData
+        })
             .then(response=>response.json())
             .then(user=>{
                 this.setState({
