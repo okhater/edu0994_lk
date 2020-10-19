@@ -8,11 +8,11 @@ export class Profile extends React.Component{
         }
     }
     componentDidMount() {
-        fetch("http://0994.vozhzhaev.ru/getUserJSON")
-            .then(response=>response.text())
-            .then(info=>{
+        fetch(`http://okhater.beget.tech/getUser`)
+            .then(response=>response.json())
+            .then(user=>{
                 this.setState({
-                    userName: info
+                    userName: user.name+" "+user.lastname
                 })
             });
     }
@@ -24,7 +24,7 @@ export class Profile extends React.Component{
                 <img width="100%" src="https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png" alt=""/>
             </div>
             <div className="col-10">
-                <h1>Иван Иванов</h1>
+                <h1>{this.state.userName}</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet deserunt facilis maxime, porro praesentium qui quibusdam quod, ratione recusandae sapiente soluta vel. Aliquid fugit labore laudantium minima molestias repellat suscipit!</p>
             </div>
         </div>

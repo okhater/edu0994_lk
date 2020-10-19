@@ -1,40 +1,48 @@
 import React from "react";
+import {NavLink} from "react-router-dom";
+
+const Tr = (props)=>{
+    return <tr>
+        <th scope="row">{props.index}</th>
+        <td><NavLink to={"user/"+props.userId}>{props.name} {props.lastname}</NavLink></td>
+        <td>{props.email}</td>
+    </tr>
+}
 
 export class Users extends React.Component{
-    render(){
-        return <table className="table table-striped">
-            <thead>
+    constructor() {
+        super();
+        this.state = {
+            users: []
+        }
+    }
+
+    componentDidMount() {
+        fetch("http://okhater.beget.tech/getUsers")
+            .then(response=>response.json())
+            .then(users=>{
+                let usersArray;
+                usersArray = users.map((user,index)=>{
+                    return <Tr userId={user.id} name={user.name} lastname={user.lastname} index={index+1} email={user.email}/>;
+                })
+                this.setState({users:usersArray});
+            })
+    }
+
+    render() {
+        return <table className="table">
+            <thead className="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Имя</th>
-                <th scope="col">Фамилия</th>
-                <th scope="col">email</th>
-                <th scope="col">id</th>
+                <th scope="col">Имя Фамилия</th>
+                <th scope="col">E-mail</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Ivan</td>
-                <td>Ivanov</td>
-                <td>ivanov@mail.ru</td>
-                <td>id=1</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>Thornton@mail.ru</td>
-                <td>id=2</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>theBird@mail.ru</td>
-                <td>id=3</td>
-            </tr>
+            {this.state.users}
             </tbody>
         </table>
     }
+
+
 }
